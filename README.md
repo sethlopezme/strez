@@ -21,6 +21,7 @@ Options:
     -n, --name          Set the name of the output files.
     -s, --source-format Set the input file format.
     -t, --target-format Set the output file format.
+    -v, --verbose       Display verbose output.
     -V, --version       Display version info and exit.
 ```
 
@@ -59,6 +60,10 @@ Set the output file format. Valid options are:
 
 - `android`
 - `ios`
+
+#### `-v`, `--verbose`
+
+Display verbose output about the files being created.
 
 ### Examples
 
