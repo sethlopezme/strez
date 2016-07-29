@@ -1,6 +1,7 @@
 # strez
 
-Convert string resources from CSV to Android and iOS formats. A good way to keep your strings in sync between platforms.
+Convert string resources from CSV to Android and iOS formats. A good way to keep strings in sync between platforms and
+hand off translations to developers.
 
 ## Install
 
