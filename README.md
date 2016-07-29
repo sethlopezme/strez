@@ -8,7 +8,7 @@ Installation instructions here.
 
 ## Usage
 
-```sh
+```
 $ strez --help
 
 Usage:
@@ -90,7 +90,7 @@ $ strez -t android -d MyProject/app/src/main/res -n my_strings ~/strings.csv
 # ./MyProject/app/src/main/res/values/my_strings.xml
 ```
 
-Using shell redirection, read strings from a file and output them to `Localizable.strings` in the iOS format.
+Using shell redirection, read string resources from stdin and output them to `Localizable.strings` in the iOS format.
 
 ```sh
 $ strez -t ios < cat ~/strings.csv
@@ -149,7 +149,7 @@ navigation_messages,Messages navigation button,Messages
 navigation_messages_count,Badge text for the Messages navigation button,%1$d Unread
 ```
 
-A more advanced example showing additional columns for plurals and an additional language–Spanish.
+A more advanced example showing additional columns for plurals and Spanish-language translations.
 
 ```
 Name,Description,Plural,Value,es
