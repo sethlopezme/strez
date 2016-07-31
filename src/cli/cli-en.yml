@@ -1,0 +1,47 @@
+# Version, About, Author are set in Rust code
+name: strez
+
+settings:
+  - UnifiedHelpMessage
+
+args:
+  - directory:
+      help: Set the output directory.
+      short: d
+      long: directory
+      takes_value: true
+      default_value: .
+  - force:
+      help: Overwrite existing files with the same output filename(s).
+      short: f
+      long: force
+  - name:
+      help: Set the name of the output file(s). Defaults to platform conventions.
+      short: n
+      long: name
+      takes_value: true
+  - source_format:
+      help: Set the input format.
+      short: s
+      long: source_format
+      takes_value: true
+      possible_values:
+        - csv
+      default_value: csv
+  - target_format:
+      help: Set the output format. Accepts multiple comma-delimited values.
+      short: t
+      long: target_format
+      takes_value: true
+      possible_values:
+        - android
+        - ios
+      required: true
+  - verbose:
+      help: Display verbose output.
+      short: v
+      long: verbose
+  - input:
+      help: Set the input file. Defaults to stdin.
+      index: 1
+      default_value: "-"
