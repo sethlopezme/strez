@@ -1,7 +1,8 @@
 # strez
 
-Convert string resources from CSV to Android and iOS formats. A good way to keep strings in sync between platforms and
-hand off translations to developers.
+Take string resources in CSV format and convert them to the Android and iOS
+formats. A good way to keep strings in sync between platforms and hand off
+translations to developers.
 
 ## Install
 
@@ -11,19 +12,24 @@ Installation instructions here.
 
 ```
 $ strez --help
+strez 0.1.0
+Take string resources in CSV format and convert them to the Android and iOS formats.
 
-Usage:
-    strez [OPTIONS] INPUT [DIRECTORY [NAME]]
-  
-Options:
-    -d, --directory     Set the output directory.
-    -f, --force         Overwrite existing files.
-    -h, --help          Display this message.
-    -n, --name          Set the name of the output files.
-    -s, --source-format Set the input file format.
-    -t, --target-format Set the output file format.
-    -v, --verbose       Display verbose output.
-    -V, --version       Display version info and exit.
+USAGE:
+    strez [OPTIONS] --target_format <target_format> [input]
+
+OPTIONS:
+    -d, --directory <directory>            Set the output directory. [default: .] 
+    -f, --force                            Overwrite existing files with the same output filename(s).
+    -h, --help                             Prints help information
+    -n, --name <name>                      Set the name of the output file(s). Defaults to platform conventions.
+    -s, --source_format <source_format>    Set the input format. [default: csv]  [values: csv]
+    -t, --target_format <target_format>    Set the output format. Accepts multiple comma-delimited values. [values: android, ios]
+    -V, --version                          Prints version information
+    -v, --verbose                          Display verbose output.
+
+ARGS:
+    <input>    Set the input file. Defaults to stdin. [default: -]
 ```
 
 ### Options
@@ -32,11 +38,12 @@ Options:
 
 Default: `.`
 
-Set the output directory. Localization directories will be created within the output directory if they do not exist.
+Set the output directory. Localization directories will be created within the
+output directory if they do not exist.
 
 #### `-f`, `--force`
 
-Overwrite existing files with the same filename as the output file.
+Overwrite existing files with the same output filename(s).
 
 #### `-n`, `--name`
 
@@ -45,30 +52,31 @@ Default:
 - Android: `strings`
 - iOS: `Localizable`
 
-Set the name of the output file.
+Set the name of the output file(s).
 
 #### `-s`, `--source-format`
 
 Default: `csv`
 
-Set the input file format. Valid formats are:
+Set the input format. Valid formats are:
 
 - `csv`
 
 #### `-t`, `--target-format`
 
-Set the output file format. Valid options are:
+Set the output format. Valid formats are:
 
 - `android`
 - `ios`
 
 #### `-v`, `--verbose`
 
-Display verbose output about the files being created.
+Display verbose output.
 
 ### Examples
 
-Read string resources from a CSV file and output them to the current directory in the iOS format.
+Read string resources from a CSV file and output them to the current directory
+in the iOS format.
 
 ```sh
 $ strez -t ios ~/strings.csv
@@ -78,7 +86,8 @@ $ strez -t ios ~/strings.csv
 # ./Localizable.stringsdict
 ```
 
-Read string resources from a CSV file and output them as `my_strings.xml` to a another directory in the Android format.
+Read string resources from a CSV file and output them as `my_strings.xml` to a
+another directory in the Android format.
 
 ```sh
 $ strez -t android ~/strings.csv MyProject/app/src/main/res my_strings
@@ -96,7 +105,8 @@ $ strez -t android -d MyProject/app/src/main/res -n my_strings ~/strings.csv
 # ./MyProject/app/src/main/res/values/my_strings.xml
 ```
 
-Using shell redirection, read string resources from stdin and output them to `Localizable.strings` in the iOS format.
+Using shell redirection, read string resources from stdin and output them to
+`Localizable.strings` in the iOS format.
 
 ```sh
 $ strez -t ios < cat ~/strings.csv
@@ -109,12 +119,14 @@ $ strez -t ios < cat ~/strings.csv
 
 ### Headers
 
-Your CSV should always include column headers. If headers are not present, strez will assume the first column is the
-string name and the second column is the string value.
+Your CSV should always include column headers. If headers are not present,
+strez will assume the first column is the string name and the second column is
+the string value.
 
 #### Name (Required)
 
-The name of the string resource. This name will be transformed into snake_case for output.
+The name of the string resource. This name will be transformed into snake_case
+for output.
 
 #### Value (Required)
 
@@ -123,12 +135,14 @@ The value of the string resource. Also serves as the default language resource.
 
 #### Description (Optional)
 
-The description of the string resource. This description will appear as a comment above the resource in the output.
+The description of the string resource. This description will appear as a
+comment above the resource in the output.
 
 #### Plural (Optional)
 
-The type of plural for the string resource, if applicable. When defining plurals, be sure to use the same name for each
-plural resource. Valid plurals are:
+The type of plural for the string resource, if applicable. When defining
+plurals, be sure to use the same name for each plural resource.
+Valid plurals are:
 
 - zero
 - one
@@ -139,12 +153,14 @@ plural resource. Valid plurals are:
 
 #### ISO 639-1 Language Headers (Optional)
 
-When providing translated strings for multiple languages, additional headers can be defined that correspond to the
-language codes in [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+When providing translated strings for multiple languages, additional headers
+can be defined that correspond to the language codes in
+[ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
 
 ### Examples
 
-Basic example showing how to define string resources with a name, description, and value.
+Basic example showing how to define string resources with a name, description,
+and value.
 
 ```
 Name,Description,Value
@@ -155,7 +171,8 @@ navigation_messages,Messages navigation button,Messages
 navigation_messages_count,Badge text for the Messages navigation button,%1$d Unread
 ```
 
-A more advanced example showing additional columns for plurals and Spanish-language translations.
+A more advanced example showing additional columns for plurals and
+Spanish-language translations.
 
 ```
 Name,Description,Plural,Value,es
