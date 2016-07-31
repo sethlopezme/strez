@@ -1,6 +1,7 @@
 [package]
 name = "strez"
 version = "0.1.0"
+description = "Take string resources in CSV format and convert them to the Android and iOS formats."
 authors = ["Seth Lopez <sethlopezme@users.noreply.github.com>"]
 homepage = "https://github.com/sethlopezme/strez"
 repository = "https://github.com/sethlopezme/strez"
