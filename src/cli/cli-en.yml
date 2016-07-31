@@ -20,18 +20,18 @@ args:
       short: n
       long: name
       takes_value: true
-  - source_format:
+  - source-format:
       help: Set the input format.
       short: s
-      long: source_format
+      long: source-format
       takes_value: true
       possible_values:
         - csv
       default_value: csv
-  - target_format:
+  - target-format:
       help: Set the output format. Accepts multiple comma-delimited values.
       short: t
-      long: target_format
+      long: target-format
       takes_value: true
       possible_values:
         - android
@@ -44,4 +44,3 @@ args:
   - input:
       help: Set the input file. Defaults to stdin.
       index: 1
-      default_value: "-"
