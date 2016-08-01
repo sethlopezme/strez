@@ -76,7 +76,7 @@ Display verbose output.
 ### Examples
 
 Read string resources from a CSV file and output them to the current directory
-in the iOS format.
+in the iOS format:
 
 ```sh
 $ strez -t ios ~/strings.csv
@@ -86,17 +86,19 @@ $ strez -t ios ~/strings.csv
 # ./Localizable.stringsdict
 ```
 
-Read string resources from a CSV file and output them as `my_strings.xml` to a
-another directory in the Android format.
+Same as above, but output both iOS and Android formats:
 
 ```sh
-$ strez -t android ~/strings.csv MyProject/app/src/main/res my_strings
+$ strez -t android,ios ~/strings.csv
 
 # Output:
-# ./MyProject/app/src/main/res/values/my_strings.xml
+# ./values/strings.xml
+# ./Localizable.strings
+# ./Localizable.stringsdict
 ```
 
-An alternative to the above example using options.
+Read string resources from a CSV file and output them as `my_strings.xml` to a
+another directory in the Android format:
 
 ```sh
 $ strez -t android -d MyProject/app/src/main/res -n my_strings ~/strings.csv
@@ -106,10 +108,10 @@ $ strez -t android -d MyProject/app/src/main/res -n my_strings ~/strings.csv
 ```
 
 Using shell redirection, read string resources from stdin and output them to
-`Localizable.strings` in the iOS format.
+`Localizable.strings` in the iOS format:
 
 ```sh
-$ strez -t ios < cat ~/strings.csv
+$ cat ~/strings.csv | strez -t ios
 
 # Output:
 # ./Localizable.strings
@@ -119,9 +121,8 @@ $ strez -t ios < cat ~/strings.csv
 
 ### Headers
 
-Your CSV should always include column headers. If headers are not present,
-strez will assume the first column is the string name and the second column is
-the string value.
+Your CSV should always include column headers. Data in columns with unrecognized
+headers or duplicate headers will be ignored. Descriptions of headers are below.
 
 #### Name (Required)
 
