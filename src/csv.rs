@@ -1,5 +1,5 @@
 use std::io;
-use super::input::Reader;
+use super::input::{Reader};
 
 pub struct CSV;
 
