@@ -9,7 +9,7 @@ extern crate clap;
 
 fn main() {
     // load the yaml usage definition
-    let yaml = load_yaml!("cli/cli-en.yml");
+    let yaml = load_yaml!("../usage/en.yml");
     // parse the command-line args from the yaml usage definition
     let args = clap::App::from_yaml(yaml)
         .version(env!("CARGO_PKG_VERSION"))
