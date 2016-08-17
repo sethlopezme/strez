@@ -8,3 +8,4 @@ repository = "https://github.com/sethlopezme/strez"
 
 [dependencies]
 clap = { version = "~2.10.0", features = ["yaml"] }
+csv = "~0.14.7"

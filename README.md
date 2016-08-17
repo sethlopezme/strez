@@ -16,20 +16,20 @@ strez 0.1.0
 Take string resources in CSV format and convert them to the Android and iOS formats.
 
 USAGE:
-    strez [OPTIONS] --target_format <target_format> [input]
+    strez [OPTIONS] --target-format <target-format> [input]
 
 OPTIONS:
     -d, --directory <directory>            Set the output directory. [default: .] 
     -f, --force                            Overwrite existing files with the same output filename(s).
     -h, --help                             Prints help information
     -n, --name <name>                      Set the name of the output file(s). Defaults to platform conventions.
-    -s, --source_format <source_format>    Set the input format. [default: csv]  [values: csv]
-    -t, --target_format <target_format>    Set the output format. Accepts multiple comma-delimited values. [values: android, ios]
+    -s, --source-format <source-format>    Set the input format. [default: csv]  [values: csv]
+    -t, --target-format <target-format>    Set the output format. Accepts multiple comma-delimited values. [values: android, ios]
     -V, --version                          Prints version information
     -v, --verbose                          Display verbose output.
 
 ARGS:
-    <input>    Set the input file. Defaults to stdin. [default: -]
+    <input>    Set the input file. Defaults to stdin.
 ```
 
 ### Options

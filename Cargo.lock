@@ -3,6 +3,7 @@ name = "strez"
 version = "0.1.0"
 dependencies = [
  "clap 2.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "csv 0.14.7 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -13,6 +14,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "bitflags"
 version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "byteorder"
+version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -31,8 +37,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "csv"
+version = "0.14.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "byteorder 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "rustc-serialize"
+version = "0.3.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
