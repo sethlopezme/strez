@@ -69,7 +69,7 @@ Set the name of the output file(s).
 #### `--no-default-language`
 
 Output the default language to the appropriate language directory.
-_See the [default language option](#-l---default-language) for more details._
+_See [default language](#-l---default-language)._
 
 #### `-s`, `--source-format`
 
