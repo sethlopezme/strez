@@ -1,0 +1,16 @@
+name,en
+navigation_dashboard,Dashboard
+navigation_locations,Locations
+navigation_my_account,My Account
+navigation_messages,Messages
+navigation_messages_count,%1$d Unread
+navigation_program_overview,Program Overview
+navigation_contact_us,Contact Us
+navigation_terms_and_conditions,Terms and Conditions
+navigation_privacy_policy,Privacy Policy
+navigation_open_source_licenses,Open Source Licenses
+navigation_log_out,Log Out
+message_list_title,Messages
+message_list_header_count,%1$d Unread Message
+message_list_header_count,%1$d Unread Messages
+message_list_row_delete,Delete

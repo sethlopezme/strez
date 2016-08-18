@@ -1,0 +1,16 @@
+name,description,quantity,en,es,fr
+navigation_dashboard,Dashboard navigation button,,Dashboard,Tablero,Tableau de bord
+navigation_locations,Locations navigation button,,Locations,Ubicaciones,Endroits
+navigation_my_account,My Account navigation button,,My Account,Mi Cuenta,Mon Compte
+navigation_messages,Messages navigation button,,Messages,Mensajes,Messages
+navigation_messages_count,Badge text for the Messages navigation button,,%1$d Unread,%1$d No Leído,%1$d Message Non Lu
+navigation_program_overview,Program Overview navigation button,,Program Overview,Reseña del Programa,Aperçu du Programme
+navigation_contact_us,Contact Us navigation button,,Contact Us,Contáctenos,Contactez nous
+navigation_terms_and_conditions,Terms and Conditions navigation button,,Terms and Conditions,Términos y Condiciones,Termes et conditions
+navigation_privacy_policy,Privacy Policy navigation button,,Privacy Policy,Política de Privacidad,Politique de Confidentialité
+navigation_open_source_licenses,Open Source Licenses navigation button,,Open Source Licenses,Licencias de Código Abierto,Licences Open Source
+navigation_log_out,Log Out navigation button,,Log Out,Cerrar Sesión,Se déconnecter
+message_list_title,Title of the message list screen,,Messages,Mensajes,Messages
+message_list_header_count,Count of the unread messages in the message list,one,%1$d Unread Message,%1$d Mensaje No Leído,%1$d Message Non Lu
+message_list_header_count,Count of the unread messages in the message list,other,%1$d Unread Messages,%1$d Mensajes No Leídos,%1$d Messages Non Lus
+message_list_row_delete,Button text for deleting a message in the message list,,Delete,Borrar,Effacer
