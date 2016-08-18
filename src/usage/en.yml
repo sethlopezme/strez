@@ -5,11 +5,20 @@ settings:
   - UnifiedHelpMessage
 
 args:
+  - default-language:
+      help: Set the default language code. Defaults to the first defined language.
+      short: l
+      long: default-language
+      takes_value: true
+      max_values: 1
+      conflicts_with:
+        - no-default-language
   - directory:
       help: Set the output directory.
       short: d
       long: directory
       takes_value: true
+      max_values: 1
       default_value: .
   - force:
       help: Overwrite existing files with the same output filename(s).
@@ -20,11 +29,18 @@ args:
       short: n
       long: name
       takes_value: true
+      max_values: 1
+  - no-default-language:
+      help: Output the default language to the appropriate language directory.
+      long: no-default-language
+      conflicts_with:
+        - default-language
   - source-format:
       help: Set the input format.
       short: s
       long: source-format
       takes_value: true
+      max_values: 1
       possible_values:
         - csv
       default_value: csv
