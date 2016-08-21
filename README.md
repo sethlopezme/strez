@@ -24,7 +24,6 @@ OPTIONS:
     -f, --force                                  Overwrite existing files with the same output filename(s).
     -h, --help                                   Prints help information
     -n, --name <name>                            Set the name of the output file(s). Defaults to platform conventions.
-        --no-default-language                    Output the default language to the appropriate language directory.
     -s, --source-format <source-format>          Set the input format. [default: csv]  [values: csv]
     -t, --target-format <target-format>          Set the output format. Accepts multiple comma-delimited values. [values: android, ios]
     -V, --version                                Prints version information
@@ -38,7 +37,7 @@ ARGS:
 
 #### `-l`, `--default-language`
 
-Default: The first language column defined in left-to-right order.
+Default: _none_
 
 Set the default language. The default language is output to the default strings
 files for each platform:
@@ -59,17 +58,12 @@ Overwrite existing files with the same output filename(s).
 
 #### `-n`, `--name`
 
-Default:
+Defaults:
 
 - Android: `strings`
 - iOS: `Localizable`
 
 Set the name of the output file(s).
-
-#### `--no-default-language`
-
-Output the default language to the appropriate language directory.
-_See [default language](#-l---default-language)._
 
 #### `-s`, `--source-format`
 
@@ -132,46 +126,27 @@ $ cat ~/strings.csv | strez -t ios
 
 # Output:
 # ./Base.lproj/Localizable.strings
+# ./Base.lproj/Localizable.stringsdict
 ```
 
 ## CSV
 
 ### Headers
 
-Your CSV must have column headers. Data in columns with unrecognized
-headers or duplicate headers will be ignored. Descriptions of headers are below.
+Your CSV must have column headers. Unrecognized headers are not allowed. When
+duplicate headers are found, the last column with the duplicate header is used.
 
 #### Name (Required)
 
 The name of the string resource. This name will be transformed into snake_case
 for output.
 
-#### Default (Required; See Below)
-
-The default-language value of the string resource. Required unless there is at
-least one language column.
-_See [ISO 639-1 Language Headers](#iso-639-1-language-headers-optional)._
-
-Default values are output to a `values` directory for Android and a `Base.lproj`
-directory for iOS. Values within language columns are output to their respective
-directories.
-
-#### ISO 639-1 Language Headers (Required)
-
-When defining values, use headers that correspond to the language codes in
-[ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Multiple
-translations can be defined by using a different language code header for each
-value column.
-
-Values are output to their respective language directories, i.e. `fr` values are
-output to the `values-fr` (Android) and `fr.lproj` (iOS) directories.
-
 #### Description (Optional)
 
 The description of the string resource. This description will appear as a
 comment above the resource in the output.
 
-#### Plural (Optional)
+#### Quantity (Optional)
 
 The type of plural for the string resource, if applicable. When defining
 plurals, be sure to use the same name for each plural resource.
@@ -184,30 +159,27 @@ Valid plurals are:
 - many
 - other
 
+#### ISO 639-1 Language Headers (Required)
+
+**Note: Language columns should be placed after all other columns.**
+
+When defining values, use headers that correspond to the language codes in
+[ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Multiple
+translations can be defined by using a different language code header for each
+value column.
+
+Values are output to their respective language directories, i.e. `fr` values are
+output to the `values-fr` (Android) and `fr.lproj` (iOS) directories.
+
+When converting strings to the Android platform, the first language in
+left-to-right order is used as the default language. Translations for the
+default language are output to the `values` directory. This behavior can be
+changed with [options](#options).
+
 ### Examples
 
-Basic example showing how to define string resources with a name, description,
-and value.
-
-```
-Name,Description,Value
-navigation_dashboard,Dashboard navigation button,Dashboard
-navigation_locations,Locations navigation button,Locations
-navigation_my_account,My Account navigation button,My Account
-navigation_messages,Messages navigation button,Messages
-navigation_messages_count,Badge text for the Messages navigation button,%1$d Unread
-```
-
-A more advanced example showing additional columns for plurals and
-Spanish-language translations.
-
-```
-Name,Description,Plural,Value,es
-message_list_title,Title of the message list screen,,Messages,Mensajes
-message_list_header_count,Count of the unread messages in the message list,one,%1$d Unread Message,%1$d Mensaje No Leído
-message_list_header_count,Count of the unread messages in the message list,other,%1$d Unread Messages,%1$d Mensajes No Leídos
-message_list_row_delete,Button text for deleting a message in the message list,,Delete,Borrar
-```
+Examples of valid strez CSV files can be found in the
+[examples/csv](examples/csv) directory.
 
 ## License
 
