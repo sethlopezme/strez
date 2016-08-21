@@ -30,6 +30,7 @@ args:
       max_values: 1
   - source-format:
       help: Set the input format.
+      hidden: true
       short: s
       long: source-format
       takes_value: true

@@ -24,7 +24,6 @@ OPTIONS:
     -f, --force                                  Overwrite existing files with the same output filename(s).
     -h, --help                                   Prints help information
     -n, --name <name>                            Set the name of the output file(s). Defaults to platform conventions.
-    -s, --source-format <source-format>          Set the input format. [default: csv]  [values: csv]
     -t, --target-format <target-format>          Set the output format. Accepts comma-delimited values. [default: android,ios]  [values: android, ios]
     -V, --version                                Prints version information
     -v, --verbose                                Display verbose output.
