@@ -6,7 +6,7 @@ settings:
 
 args:
   - default-language:
-      help: Set the default language code.
+      help: Set the default language.
       short: l
       long: default-language
       takes_value: true

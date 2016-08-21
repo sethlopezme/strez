@@ -19,7 +19,7 @@ USAGE:
     strez [OPTIONS] --target-format <target-format> [input]
 
 OPTIONS:
-    -l, --default-language <default-language>    Set the default language. Defaults to the first defined language.
+    -l, --default-language <default-language>    Set the default language.
     -d, --directory <directory>                  Set the output directory. [default: .] 
     -f, --force                                  Overwrite existing files with the same output filename(s).
     -h, --help                                   Prints help information
