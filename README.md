@@ -125,7 +125,7 @@ Output:
 # ./values-fr/strings.xml
 ```
 
-Assuming English translations only, read string resources from a CSV file and
+Assuming only English translations, read string resources from a CSV file and
 output them as `my_strings.xml` to a another directory in the Android format:
 
 ```sh
