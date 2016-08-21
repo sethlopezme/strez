@@ -43,7 +43,9 @@ Set the default language. The default language is output to the default strings
 files for each platform:
 
 - Android: `values/strings.xml`
-- iOS: `Base.lproj/Localizable.strings`/`Base.lproj/Localizable.stringsdict`
+- iOS:
+    - `Base.lproj/Localizable.strings`
+    - `Base.lproj/Localizable.stringsdict`
 
 #### `-d`, `--directory`
 
@@ -170,11 +172,6 @@ value column.
 
 Values are output to their respective language directories, i.e. `fr` values are
 output to the `values-fr` (Android) and `fr.lproj` (iOS) directories.
-
-When converting strings to the Android platform, the first language in
-left-to-right order is used as the default language. Translations for the
-default language are output to the `values` directory. This behavior can be
-changed with [options](#options).
 
 ### Examples
 
