@@ -16,7 +16,7 @@ strez 0.1.0
 Take string resources in CSV format and convert them to the Android and iOS formats.
 
 USAGE:
-    strez [OPTIONS] --target-format <target-format> [input]
+    strez [OPTIONS] <input>
 
 OPTIONS:
     -l, --default-language <default-language>    Set the default language.
@@ -25,12 +25,12 @@ OPTIONS:
     -h, --help                                   Prints help information
     -n, --name <name>                            Set the name of the output file(s). Defaults to platform conventions.
     -s, --source-format <source-format>          Set the input format. [default: csv]  [values: csv]
-    -t, --target-format <target-format>          Set the output format. Accepts multiple comma-delimited values. [values: android, ios]
+    -t, --target-format <target-format>          Set the output format. Accepts comma-delimited values. [default: android,ios]  [values: android, ios]
     -V, --version                                Prints version information
     -v, --verbose                                Display verbose output.
 
 ARGS:
-    <input>    Set the input file. Defaults to stdin.
+    <input>    Set the input file.
 ```
 
 ### Options
@@ -77,7 +77,9 @@ Set the input format. Valid formats are:
 
 #### `-t`, `--target-format`
 
-Set the output format. Valid formats are:
+Default: `android,ios`
+
+Set the output format. Accepts comma-delimited values. Valid formats are:
 
 - `android`
 - `ios`
@@ -118,17 +120,6 @@ $ strez -t android -d MyProject/app/src/main/res -n my_strings ~/strings.csv
 
 # Output:
 # ./MyProject/app/src/main/res/values/my_strings.xml
-```
-
-Using shell redirection, read string resources from stdin and output them to
-`Localizable.strings` in the iOS format:
-
-```sh
-$ cat ~/strings.csv | strez -t ios
-
-# Output:
-# ./Base.lproj/Localizable.strings
-# ./Base.lproj/Localizable.stringsdict
 ```
 
 ## CSV
