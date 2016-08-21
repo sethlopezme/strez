@@ -38,18 +38,18 @@ args:
         - csv
       default_value: csv
   - target-format:
-      help: Set the output format. Accepts multiple comma-delimited values.
+      help: Set the output format. Accepts comma-delimited values.
       short: t
       long: target-format
       takes_value: true
       possible_values:
         - android
         - ios
-      required: true
+      default_value: android,ios
   - verbose:
       help: Display verbose output.
       short: v
       long: verbose
   - input:
-      help: Set the input file. Defaults to stdin.
-      index: 1
+      help: Set the input file.
+      required: true
