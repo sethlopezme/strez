@@ -90,36 +90,53 @@ Display verbose output.
 
 ### Examples
 
-Read string resources from a CSV file and output them to the current directory
-in the iOS format:
+Assuming only English translations, read string resources from a CSV file and
+output them to the current directory in both iOS and Android formats:
 
 ```sh
-$ strez -t ios ~/strings.csv
+$ strez ~/strings.csv
 
 # Output:
-# ./Base.lproj/Localizable.strings
-# ./Base.lproj/Localizable.stringsdict
+# ./values-en/strings.xml
+# ./en.lproj/Localizable.strings
+# ./en.lproj/Localizable.stringsdict
 ```
 
-Same as above, but output both iOS and Android formats:
+Same as above, but output to the iOS format only:
 
 ```sh
-$ strez -t android,ios ~/strings.csv
+$ strez --target-format ios ~/strings.csv
 
 # Output:
+# ./en.lproj/Localizable.strings
+# ./en.lproj/Localizable.stringsdict
+```
+
+Assuming English, Spanish, and French translations, read string resources from a
+CSV file and output them to the current directory in the Android format, with
+English as the default language:
+
+```sh
+$ strez --target-format android --default-language en ~/strings.csv
+
+Output:
 # ./values/strings.xml
-# ./Base.lproj/Localizable.strings
-# ./Base.lproj/Localizable.stringsdict
+# ./values-es/strings.xml
+# ./values-fr/strings.xml
 ```
 
-Read string resources from a CSV file and output them as `my_strings.xml` to a
-another directory in the Android format:
+Assuming English translations only, read string resources from a CSV file and
+output them as `my_strings.xml` to a another directory in the Android format:
 
 ```sh
-$ strez -t android -d MyProject/app/src/main/res -n my_strings ~/strings.csv
+$ strez \
+  --target-format android \
+  --directory MyProject/app/src/main/res \
+  --name my_strings \
+  ~/strings.csv
 
 # Output:
-# ./MyProject/app/src/main/res/values/my_strings.xml
+# ./MyProject/app/src/main/res/values-en/my_strings.xml
 ```
 
 ## CSV
