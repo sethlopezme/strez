@@ -66,14 +66,6 @@ Defaults:
 
 Set the name of the output file(s).
 
-#### `-s`, `--source-format`
-
-Default: `csv`
-
-Set the input format. Valid formats are:
-
-- `csv`
-
 #### `-t`, `--target-format`
 
 Default: `android,ios`
