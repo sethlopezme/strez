@@ -133,10 +133,14 @@ $ cat ~/strings.csv | strez -t ios
 
 ## CSV
 
-### Headers
+### Columns
 
-Your CSV must have column headers. Unrecognized headers are not allowed. When
-duplicate headers are found, the last column with the duplicate header is used.
+Your CSV must have column headers. Unrecognized columns are not allowed. When
+duplicate columns are found, the last value for a duplicate column is used.
+
+Column headers are described below. Columns marked as required _must_ be present
+and have a value. Columns marked as optional may be entirely omitted, or may be
+present without requiring a value in any row.
 
 #### Name (Required)
 
@@ -150,9 +154,9 @@ comment above the resource in the output.
 
 #### Quantity (Optional)
 
-The type of plural for the string resource, if applicable. When defining
-plurals, be sure to use the same name for each plural resource.
-Valid plurals are:
+The quantity for the string resource, if applicable. When defining quantities
+for a string resource, be sure to use the same resource name in each row. Valid
+quantities are:
 
 - zero
 - one
@@ -163,7 +167,7 @@ Valid plurals are:
 
 #### ISO 639-1 Language Headers (Required)
 
-**Note: Language columns should be placed after all other columns.**
+_NOTE: Language columns should be placed after all other columns._
 
 When defining values, use headers that correspond to the language codes in
 [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Multiple
