@@ -1,11 +1,9 @@
 use std::io;
 
-use super::resource::ResourceCollection;
-
-pub trait Input {
-    fn from_reader(mut reader: Box<io::Read>) -> Result<ResourceCollection, &'static str>;
+pub trait Deserialize {
+    fn from_reader(mut reader: Box<io::Read>);
 }
 
-pub trait Output {
+pub trait Serialize {
     fn to_file();
 }
