@@ -1,56 +1,47 @@
 # Version, About, Author are set in Rust code
 name: strez
 
-settings:
-  - UnifiedHelpMessage
-
 args:
-  - default-language:
-      help: Set the default language.
-      short: l
-      long: default-language
-      takes_value: true
-      max_values: 1
-  - directory:
-      help: Set the output directory.
-      short: d
-      long: directory
-      takes_value: true
-      max_values: 1
-      default_value: .
   - force:
-      help: Overwrite existing files with the same output filename(s).
+      help: Overwrites existing files
       short: f
       long: force
-  - name:
-      help: Set the name of the output file(s). Defaults to platform conventions.
-      short: n
-      long: name
+  - format:
+      help: Sets the input data format
+      long: format
       takes_value: true
-      max_values: 1
-  - source-format:
-      help: Set the input format.
-      hidden: true
-      short: s
-      long: source-format
-      takes_value: true
-      max_values: 1
+      value_name: format
+      number_of_values: 1
+      default_value: csv
       possible_values:
         - csv
-      default_value: csv
-  - target-format:
-      help: Set the output format. Accepts comma-delimited values.
-      short: t
-      long: target-format
+  - default-language:
+      help: Sets the default language
+      long: default-language
       takes_value: true
+      value_name: language
+      number_of_values: 1
+  - platform:
+      help: Sets the platform(s) (comma-delimited)
+      long: platform
+      takes_value: true
+      value_name: platform
+      require_delimiter: true
+      default_value: android,ios
       possible_values:
         - android
         - ios
-      default_value: android,ios
-  - verbose:
-      help: Display verbose output.
-      short: v
-      long: verbose
-  - input:
-      help: Set the input file.
+  - infile:
+      help: Input file path
       required: true
+      takes_value: true
+      value_name: infile
+      empty_values: false
+      number_of_values: 1
+  - outdir:
+      help: Output directory path
+      required: true
+      takes_value: true
+      value_name: outdir
+      empty_values: false
+      number_of_values: 1
