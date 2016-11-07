@@ -1,8 +1,9 @@
 # strez
 
-Take string resources in CSV format and convert them to the Android and iOS
-formats. A good way to keep strings in sync between platforms and hand off
-translations to developers.
+`strez` makes it easier to hand strings and translations off to developers and
+keep those strings in sync. One true source of strings can be defined in one
+format (CSV-only, for now) and be converted to formats readable by multiple
+platforms (currently Android and iOS).
 
 ## Install
 
@@ -13,79 +14,66 @@ Installation instructions here.
 ```
 $ strez --help
 strez 0.1.0
-Take string resources in CSV format and convert them to the Android and iOS formats.
+Convert strings to formats readable by the Android and iOS platforms.
 
 USAGE:
-    strez [OPTIONS] <input>
+    strez [FLAGS] [OPTIONS] <infile> <outdir>
+
+FLAGS:
+    -f, --force      Overwrites existing files
+    -h, --help       Prints help information
+    -V, --version    Prints version information
 
 OPTIONS:
-    -l, --default-language <default-language>    Set the default language.
-    -d, --directory <directory>                  Set the output directory. [default: .] 
-    -f, --force                                  Overwrite existing files with the same output filename(s).
-    -h, --help                                   Prints help information
-    -n, --name <name>                            Set the name of the output file(s). Defaults to platform conventions.
-    -t, --target-format <target-format>          Set the output format. Accepts comma-delimited values. [default: android,ios]  [values: android, ios]
-    -V, --version                                Prints version information
-    -v, --verbose                                Display verbose output.
+        --default-language <language>    Sets the default language
+        --format <format>                Sets the input data format [default: csv]  [values: csv]
+        --platform <platform>            Sets the platform(s) (comma-delimited) [default: android,ios]  [values: android, ios]
 
 ARGS:
-    <input>    Set the input file.
+    <infile>    Input file path
+    <outdir>    Output directory path
 ```
 
 ### Options
 
-#### `-l`, `--default-language`
+#### `--default-language`
 
 Default: _none_
 
-Set the default language. The default language is output to the default strings
-files for each platform:
+Sets the default language. Strings defined in the default language will be
+output to the default strings file for each platform:
 
 - Android: `values/strings.xml`
 - iOS:
-    - `Base.lproj/Localizable.strings`
-    - `Base.lproj/Localizable.stringsdict`
+    - `Base.lproj/Localizable.strings` (singular strings)
+    - `Base.lproj/Localizable.stringsdict` (quantity strings)
 
-#### `-d`, `--directory`
+#### `--format`
 
-Default: `.`
+Default: `csv`
 
-Set the output directory. Localization directories will be created within the
-output directory if they do not exist.
+Sets the input data format. For now, the only supported format is `csv`, but
+more will be added in the future.
 
-#### `-f`, `--force`
-
-Overwrite existing files with the same output filename(s).
-
-#### `-n`, `--name`
-
-Defaults:
-
-- Android: `strings`
-- iOS: `Localizable`
-
-Set the name of the output file(s).
-
-#### `-t`, `--target-format`
+#### `--platform`
 
 Default: `android,ios`
 
-Set the output format. Accepts comma-delimited values. Valid formats are:
+Sets the platform(s) for which `strez` will output files. Values must be
+comma-delimited.
+
+Valid values are:
 
 - `android`
 - `ios`
 
-#### `-v`, `--verbose`
-
-Display verbose output.
-
 ### Examples
 
-Assuming only English translations, read string resources from a CSV file and
-output them to the current directory in both iOS and Android formats:
+Assuming only English translations, read strings from a CSV file and output them
+in the current directory for both the Android and iOS platforms:
 
 ```sh
-$ strez ~/strings.csv
+$ strez ~/strings.csv .
 
 # Output:
 # ./values-en/strings.xml
@@ -93,41 +81,37 @@ $ strez ~/strings.csv
 # ./en.lproj/Localizable.stringsdict
 ```
 
-Same as above, but output to the iOS format only:
+Same as above, but output them for the iOS platform only:
 
 ```sh
-$ strez --target-format ios ~/strings.csv
+$ strez --platform=ios ~/strings.csv .
 
 # Output:
 # ./en.lproj/Localizable.strings
 # ./en.lproj/Localizable.stringsdict
 ```
 
-Assuming English, Spanish, and French translations, read string resources from a
-CSV file and output them to the current directory in the Android format, with
-English as the default language:
+Assuming only English translations, read strings from a CSV file and output them
+in another directory for the Android platform:
 
 ```sh
-$ strez --target-format android --default-language en ~/strings.csv
+$ strez --platform=android ~/strings.csv MyProject/app/src/main/res
+
+# Output:
+# ./MyProject/app/src/main/res/values-en/my_strings.xml
+```
+
+Assuming English, Spanish, and French translations, read strings from a CSV file
+and output them in the current directory for the Android platform, with English
+as the default language:
+
+```sh
+$ strez --platform=android --default-language=en ~/strings.csv .
 
 Output:
 # ./values/strings.xml
 # ./values-es/strings.xml
 # ./values-fr/strings.xml
-```
-
-Assuming only English translations, read string resources from a CSV file and
-output them as `my_strings.xml` to a another directory in the Android format:
-
-```sh
-$ strez \
-  --target-format android \
-  --directory MyProject/app/src/main/res \
-  --name my_strings \
-  ~/strings.csv
-
-# Output:
-# ./MyProject/app/src/main/res/values-en/my_strings.xml
 ```
 
 ## CSV
@@ -138,18 +122,18 @@ Your CSV must have column headers. Unrecognized columns are not allowed. When
 duplicate columns are found, the last value for a duplicate column is used.
 
 Column headers are described below. Columns marked as required _must_ be present
-and have a value. Columns marked as optional may be entirely omitted, or may be
-present without requiring a value in any row.
+and have a value in all rows. Columns marked as optional may be entirely
+omitted, or may be present without requiring a value in any row.
 
-#### Name (Required)
+#### Key (Required)
 
-The name of the string resource. This name will be transformed into snake_case
-for output.
+The key of the string resource. This key is what will be used to refer to the
+string resource in code.
 
-#### Description (Optional)
+#### Comment (Optional)
 
-The description of the string resource. This description will appear as a
-comment above the resource in the output.
+A comment for a string resource. Comments may be used to describe how the string
+resource is used. Comments will appear above the string resource in the output.
 
 #### Quantity (Optional)
 
@@ -178,9 +162,9 @@ output to the `values-fr` (Android) and `fr.lproj` (iOS) directories.
 
 ### Examples
 
-Examples of valid strez CSV files can be found in the
-[examples/csv](examples/csv) directory.
+Examples of valid strez string files in CSV format can be found in
+[examples/csv](examples/csv).
 
 ## License
 
-MIT &copy; Seth Lopez
+MIT &copy; Seth Lopez 2016
