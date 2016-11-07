@@ -1,11 +1,11 @@
 [package]
 name = "strez"
 version = "0.1.0"
-description = "Take string resources in CSV format and convert them to the Android and iOS formats."
+description = "Convert strings to formats readable by the Android and iOS platforms."
 authors = ["Seth Lopez <sethlopezme@users.noreply.github.com>"]
 homepage = "https://github.com/sethlopezme/strez"
 repository = "https://github.com/sethlopezme/strez"
 
 [dependencies]
-clap = { version = "~2.10.0", features = ["yaml"] }
+clap = { version = "~2.18.0", features = ["yaml"] }
 csv = "~0.14.7"
