@@ -17,12 +17,12 @@ fn main() {
         .get_matches();
     
     // if the "input" argument is present, get a file reader
-    let reader: Box<io::Read> = match args.value_of("input") {
+    let reader: Box<io::Read> = match args.value_of("infile") {
         Some(path) => Box::new(fs::File::open(path).expect("Error: unable to open file")),
         None       => panic!("Error: no input file provided"),
     };
     
-    let source_format = args.value_of("source-format").unwrap_or("csv");
+    let source_format = args.value_of("format").unwrap_or("csv");
     // load data using the appropriate loader
     match source_format {
 //        "csv" => strez::CSV::from_reader(reader),
