@@ -2,7 +2,8 @@ use std::fs;
 use std::io;
 
 extern crate strez;
-use strez::serialize::Deserialize;
+//use strez::parse::Parse;
+use strez::settings::Settings;
 
 #[macro_use]
 extern crate clap;
@@ -15,6 +16,10 @@ fn main() {
         .version(env!("CARGO_PKG_VERSION"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .get_matches();
+    let settings = Settings::from_clap(&args);
+
+    println!("args = {:#?}", args);
+    println!("settings = {:#?}", settings);
     
     // if the "input" argument is present, get a file reader
     let reader: Box<io::Read> = match args.value_of("infile") {
