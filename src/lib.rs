@@ -1,2 +1,3 @@
-pub mod serialize;
-pub mod lang;
+pub mod language;
+pub mod platform;
+pub mod settings;
