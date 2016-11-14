@@ -2,6 +2,12 @@
 name: strez
 
 args:
+  - default_language:
+      help: Sets the default language
+      long: default-language
+      takes_value: true
+      value_name: language
+      number_of_values: 1
   - force:
       help: Overwrites existing files
       short: f
@@ -12,22 +18,14 @@ args:
       takes_value: true
       value_name: format
       number_of_values: 1
-      default_value: csv
       possible_values:
         - csv
-  - default-language:
-      help: Sets the default language
-      long: default-language
-      takes_value: true
-      value_name: language
-      number_of_values: 1
   - platform:
       help: Sets the platform(s) (comma-delimited)
       long: platform
       takes_value: true
       value_name: platform
       require_delimiter: true
-      default_value: android,ios
       possible_values:
         - android
         - ios
