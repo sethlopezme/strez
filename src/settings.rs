@@ -1,3 +1,7 @@
+use std::error::Error;
+use std::fs;
+use std::path::PathBuf;
+
 use platform::PlatformKind;
 use language::LanguageKind;
 
@@ -5,43 +9,52 @@ extern crate clap;
 
 #[derive(Debug)]
 pub struct Settings<'a> {
-    default_language: Option<LanguageKind>,
-    directory: &'a str,
-    force: bool,
-    format: &'a str,
-    input: &'a str,
-    platform: Vec<PlatformKind>,
+    pub default_language: Option<LanguageKind>,
+    pub force: bool,
+    pub format: &'a str,
+    pub infile: PathBuf,
+    pub outdir: PathBuf,
+    pub platform: Vec<PlatformKind>,
 }
 
 impl<'a> Settings<'a> {
+    /*
+     * Takes argument matches from clap and turns them into a Settings struct that is easier to use.
+     */
     pub fn from_clap(args: &'a clap::ArgMatches) -> Result<Settings<'a>, String> {
-        Ok(Settings {
+        let settings = Settings {
             default_language: match args.value_of("default_language") {
                 Some(language_code) => Some(language_code.parse::<LanguageKind>()?),
                 None => None,
             },
-            directory: args.value_of("outdir").ok_or(String::from("missing output directory"))?,
             force: args.is_present("force"),
             format: "csv",
-            input: args.value_of("infile").ok_or(String::from("missing input file"))?,
-            platform: arg_to_platforms(args.values_of("platform"))?,
-        })
+            infile: str_to_pathbuf(args.value_of("infile")
+                                       .ok_or(String::from("missing required infile argument"))?, true)?,
+            outdir: str_to_pathbuf(args.value_of("outdir")
+                                       .ok_or(String::from("missing required outdir argument"))?, false)?,
+            platform: args.values_of("platform")
+                          .map_or(Ok(vec![PlatformKind::Android, PlatformKind::iOS]), |platforms| {
+                              platforms.map(|platform| platform.parse::<PlatformKind>())
+                                       .collect::<Result<Vec<PlatformKind>, String>>()
+                          })?
+        };
+
+        Ok(settings)
     }
 }
 
-fn arg_to_platforms(platforms_option: Option<clap::Values>) -> Result<Vec<PlatformKind>, String> {
-    match platforms_option {
-        Some(platform_values) => {
-            let mut platforms: Vec<PlatformKind> = vec![];
+/*
+ * Converts a string into a PathBuf, ensuring that the path exists and is a file or directory.
+ */
+fn str_to_pathbuf(path_str: &str, is_file: bool) -> Result<PathBuf, String> {
+    let pathbuf = fs::canonicalize(path_str).map_err(|e| format!("\"{}\" {}", path_str, e.description()))?;
 
-            for platform in platform_values {
-                platforms.push(platform.parse::<PlatformKind>()?);
-            }
-
-            platforms.sort();
-            Ok(platforms)
-        },
-        None => Ok(vec![PlatformKind::Android, PlatformKind::iOS])
+    if is_file && !pathbuf.is_file() {
+        Err(format!("\"{}\" is not a file", path_str))
+    } else if !is_file && !pathbuf.is_dir() {
+        Err(format!("\"{}\" is not a directory", path_str))
+    } else {
+        Ok(pathbuf)
     }
 }
-
