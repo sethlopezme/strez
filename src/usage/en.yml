@@ -14,6 +14,7 @@ args:
       long: force
   - format:
       help: Sets the input data format
+      hidden: true
       long: format
       takes_value: true
       value_name: format
@@ -23,6 +24,8 @@ args:
   - platform:
       help: Sets the platform(s) (comma-delimited)
       long: platform
+      aliases:
+        - platforms
       takes_value: true
       value_name: platform
       require_delimiter: true
