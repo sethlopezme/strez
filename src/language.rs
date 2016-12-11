@@ -1,5 +1,7 @@
 use std::str::FromStr;
 
+use Result;
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub enum LanguageKind {
     Afar,
@@ -190,7 +192,7 @@ pub enum LanguageKind {
 
 impl FromStr for LanguageKind {
     type Err = String;
-    fn from_str(language_code: &str) -> Result<LanguageKind, String> {
+    fn from_str(language_code: &str) -> Result<LanguageKind> {
         match language_code.to_lowercase().as_str() {
             "aa" => Ok(LanguageKind::Afar),
             "ab" => Ok(LanguageKind::Abkhaz),
