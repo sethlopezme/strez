@@ -1,5 +1,3 @@
-pub mod csv;
-
 use std::fmt;
 use std::io;
 use std::str::FromStr;
@@ -32,10 +30,6 @@ impl FromStr for FormatKind {
             _ => Err(format!("unknown format \"{}\"", format)),
         }
     }
-}
-
-pub trait Format: Sized {
-    fn from_reader<R: io::Read>(r: R) -> Result<Self>;
 }
 
 #[cfg(test)]
