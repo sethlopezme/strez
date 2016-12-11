@@ -1,6 +1,8 @@
 use std::fmt;
 use std::str::FromStr;
 
+use Result;
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub enum PlatformKind {
     Android,
@@ -20,7 +22,7 @@ impl fmt::Display for PlatformKind {
 
 impl FromStr for PlatformKind {
     type Err = String;
-    fn from_str(platform: &str) -> Result<PlatformKind, String> {
+    fn from_str(platform: &str) -> Result<PlatformKind> {
         match platform.to_lowercase().as_str() {
             "android" => Ok(PlatformKind::Android),
             "ios" => Ok(PlatformKind::Ios),
