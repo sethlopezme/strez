@@ -1,9 +1,21 @@
+use std::fmt;
 use std::str::FromStr;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub enum PlatformKind {
     Android,
-    iOS
+    Ios
+}
+
+impl fmt::Display for PlatformKind {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let platform_str = match *self {
+            PlatformKind::Android => "Android",
+            PlatformKind::Ios => "iOS",
+        };
+
+        write!(f, "{}", platform_str)
+    }
 }
 
 impl FromStr for PlatformKind {
@@ -11,7 +23,7 @@ impl FromStr for PlatformKind {
     fn from_str(platform: &str) -> Result<PlatformKind, String> {
         match platform.to_lowercase().as_str() {
             "android" => Ok(PlatformKind::Android),
-            "ios" => Ok(PlatformKind::iOS),
+            "ios" => Ok(PlatformKind::Ios),
             _ => Err(format!("unknown platform \"{}\"", platform)),
         }
     }
@@ -24,7 +36,7 @@ mod tests {
     #[test]
     fn str_to_platformkind() {
         assert_eq!("android".parse::<PlatformKind>(), Ok(PlatformKind::Android));
-        assert_eq!("ios".parse::<PlatformKind>(), Ok(PlatformKind::iOS));
+        assert_eq!("ios".parse::<PlatformKind>(), Ok(PlatformKind::Ios));
         assert!("unknown".parse::<PlatformKind>().is_err());
     }
 
