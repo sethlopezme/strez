@@ -1,10 +1,9 @@
+use std::error::Error;
 use std::fs;
 use std::io;
 use std::io::Write;
-use std::process;
 
 extern crate strez;
-//use strez::parse::Parse;
 use strez::settings::Settings;
 
 #[macro_use]
@@ -18,33 +17,23 @@ fn main() {
         .version(env!("CARGO_PKG_VERSION"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .get_matches();
-
-    match run(args) {
-        Err(e) => {
-            let _ = writeln!(&mut io::stderr(), "Error: {}", e);
-            process::exit(1);
-        },
-        Ok(_) => process::exit(0),
+    // exit with the error and code if an error is returned
+    if let Err(ref e) = run(args) {
+        let _ = writeln!(&mut io::stderr(), "Error: {}", e);
+        std::process::exit(1);
     }
 }
 
-fn run(args: clap::ArgMatches) -> Result<(), String> {
+fn run(args: clap::ArgMatches) -> strez::Result<()> {
     let settings = Settings::from_clap(&args)?;
+    let file = fs::File::open(&settings.infile).map_err(|e| format!("{} could not be read, \"{}\"", e.description(), settings.infile.display()))?;
 
-    println!("args = {:#?}", args);
-    println!("settings = {:#?}", settings);
+//    println!("settings = {:#?}", settings);
 
-    // if the "input" argument is present, get a file reader
-//    let reader: Box<io::Read> = match args.value_of("infile") {
-//        Some(path) => Box::new(fs::File::open(path).expect("Error: unable to open file")),
-//        None       => panic!("Error: no input file provided"),
-//    };
-
-//    let source_format = args.value_of("format").unwrap_or("csv");
     // load data using the appropriate loader
     match settings.format {
         //        "csv" => strez::CSV::from_reader(reader),
-        f     => return Err(String::from(format!("unsupported format '{}'", f))),
+        format => return Err(format!("{} format is not yet supported", format)),
     };
 
     Ok(())
