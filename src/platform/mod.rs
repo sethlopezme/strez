@@ -23,7 +23,7 @@ impl fmt::Display for PlatformKind {
 impl FromStr for PlatformKind {
     type Err = String;
     fn from_str(platform: &str) -> Result<PlatformKind> {
-        match platform.to_lowercase().as_str() {
+        match platform.to_lowercase().trim() {
             "android" => Ok(PlatformKind::Android),
             "ios" => Ok(PlatformKind::Ios),
             _ => Err(format!("unknown platform \"{}\"", platform)),
