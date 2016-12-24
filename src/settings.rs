@@ -2,7 +2,7 @@ use std::error::Error;
 use std::fs;
 use std::path::PathBuf;
 
-use format::FormatKind;
+use format::Format;
 use platform::PlatformKind;
 use language::LanguageKind;
 use Result;
@@ -13,7 +13,7 @@ extern crate clap;
 pub struct Settings {
     pub default_language: Option<LanguageKind>,
     pub force: bool,
-    pub format: FormatKind,
+    pub format: Format,
     pub infile: PathBuf,
     pub outdir: PathBuf,
     pub platform: Vec<PlatformKind>,
@@ -32,7 +32,7 @@ impl Settings {
             force: args.is_present("force"),
             format: args.value_of("format")
                         .unwrap_or("csv")
-                        .parse::<FormatKind>()?,
+                        .parse::<Format>()?,
             infile: str_to_pathbuf(args.value_of("infile").ok_or(String::from("missing required infile argument"))?, true)?,
             outdir: str_to_pathbuf(args.value_of("outdir").ok_or(String::from("missing required outdir argument"))?, false)?,
             platform: args.values_of("platform")
