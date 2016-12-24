@@ -4,6 +4,7 @@ use std::io;
 use std::io::Write;
 
 extern crate strez;
+
 use strez::settings::Settings;
 
 #[macro_use]
@@ -17,6 +18,7 @@ fn main() {
         .version(env!("CARGO_PKG_VERSION"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .get_matches();
+
     // exit with the error and code if an error is returned
     if let Err(ref e) = run(args) {
         let _ = writeln!(&mut io::stderr(), "Error: {}", e);
@@ -26,15 +28,12 @@ fn main() {
 
 fn run(args: clap::ArgMatches) -> strez::Result<()> {
     let settings = Settings::from_clap(&args)?;
-    let file = fs::File::open(&settings.infile).map_err(|e| format!("{} could not be read, \"{}\"", e.description(), settings.infile.display()))?;
+    let file = fs::File::open(&settings.infile).map_err(|e| format!("\"{}\" could not be read, {}", settings.infile.display(), e.description()))?;
 
-//    println!("settings = {:#?}", settings);
+    //    println!("settings = {:#?}", settings);
 
     // load data using the appropriate loader
-    match settings.format {
-        //        "csv" => strez::CSV::from_reader(reader),
-        format => return Err(format!("{} format is not yet supported", format)),
-    };
+    let resources = settings.format.parse_reader(file)?;
 
     Ok(())
 }
