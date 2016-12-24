@@ -1,32 +1,44 @@
 use std::fmt;
 use std::io;
+use std::path::Path;
 use std::str::FromStr;
 
 use Result;
 
+mod csv;
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
-pub enum FormatKind {
+pub enum Format {
     CSV,
-    XLIFF
+    XLIFF,
 }
 
-impl fmt::Display for FormatKind {
+impl Format {
+    pub fn parse_reader<R: io::Read>(&self, reader: R) -> Result<()> {
+        match *self {
+            Format::CSV => csv::parse_reader(reader),
+            ref f => Err(format!("{} format is not supported right now", f))
+        }
+    }
+}
+
+impl fmt::Display for Format {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let format_str = match *self {
-            FormatKind::CSV => "CSV",
-            FormatKind::XLIFF => "XLIFF",
+            Format::CSV => "CSV",
+            Format::XLIFF => "XLIFF",
         };
 
         write!(f, "{}", format_str)
     }
 }
 
-impl FromStr for FormatKind {
+impl FromStr for Format {
     type Err = String;
-    fn from_str(format: &str) -> Result<FormatKind> {
+    fn from_str(format: &str) -> Result<Format> {
         match format.to_lowercase().as_str() {
-            "csv" => Ok(FormatKind::CSV),
-            "xliff" => Ok(FormatKind::XLIFF),
+            "csv" => Ok(Format::CSV),
+            "xliff" => Ok(Format::XLIFF),
             _ => Err(format!("unknown format \"{}\"", format)),
         }
     }
@@ -37,14 +49,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn str_to_formatkind() {
-        assert_eq!("csv".parse::<FormatKind>(), Ok(FormatKind::CSV));
-        assert_eq!("xliff".parse::<FormatKind>(), Ok(FormatKind::XLIFF));
-        assert!("unknown".parse::<FormatKind>().is_err());
+    fn str_to_format() {
+        assert_eq!("csv".parse::<Format>(), Ok(Format::CSV));
+        assert_eq!("xliff".parse::<Format>(), Ok(Format::XLIFF));
+        assert!("unknown".parse::<Format>().is_err());
     }
 
     #[test]
-    fn uppercase_str_to_formatkind() {
-        assert_eq!("CSV".parse::<FormatKind>(), Ok(FormatKind::CSV));
+    fn uppercase_str_to_format() {
+        assert_eq!("CSV".parse::<Format>(), Ok(Format::CSV));
     }
 }
