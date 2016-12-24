@@ -63,11 +63,12 @@ mod tests {
     }
 
     #[test]
-    fn str_to_unknown_quantity() {
-        assert!("unknown".parse::<Quantity>().is_err());
-    }
-
     fn uppercase_str_to_quantity() {
         assert_eq!("ZERO".parse::<Quantity>(), Ok(Quantity::Zero));
+    }
+
+    #[test]
+    fn str_to_unknown_quantity() {
+        assert!("unknown".parse::<Quantity>().is_err());
     }
 }
