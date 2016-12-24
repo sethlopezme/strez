@@ -1,6 +1,5 @@
 use std::fmt;
 use std::io;
-use std::path::Path;
 use std::str::FromStr;
 
 use Result;

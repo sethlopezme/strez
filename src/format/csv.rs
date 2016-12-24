@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use std::error::Error;
 use std::io;
-use std::path::Path;
 
 use Result;
 
@@ -12,46 +11,50 @@ pub fn parse_reader<'a, R: io::Read>(reader: R) -> Result<()> {
     let headers = csv_reader.headers()
                             .map_err(|e| format!("unable to parse headers, {}", e.description()))?;
     let records = csv_reader.records()
-                          .enumerate()
-                          .map(|(i, line)| {
-                              let line = line.map_err(|e| format!("unable to parse record on line {}, {}", i + 2, e.description()))?;
-                              let key_value_iter = headers.iter().zip(line.iter());
-                              let mut record_builder = RecordBuilder::new();
+                            .enumerate()
+                            .map(|(i, line)| {
+                                let line_number = i + 2;
+                                let line = line.map_err(|e| format!("unable to parse line {}, {}", line_number, e.description()))?;
+                                let key_value_iter = headers.iter().zip(line.into_iter());
+                                let mut record_builder = RecordBuilder::new();
 
-                              for (key, value) in key_value_iter {
-                                  let _ = match key.to_lowercase().trim() {
-                                      "name" => record_builder.name(value.as_str()),
-                                      "description" => record_builder.description(value.as_str()),
-                                      "quantity" => record_builder.quantity(value.as_str()),
-                                      _ => record_builder.translation(key.as_str(), value.as_str()),
-                                  };
-                              }
+                                for (key, value) in key_value_iter {
+                                    let _ = match key.to_lowercase().trim() {
+                                        "name" => record_builder.name(value),
+                                        "description" => record_builder.description(value),
+                                        "quantity" => record_builder.quantity(value),
+                                        _ => record_builder.translation(key.clone(), value),
+                                    };
+                                }
 
-                              record_builder.build()
-                          })
-                          .collect::<Result<Vec<Record>>>()?;
+                                record_builder.build()
+                                              .map_err(|string| format!("unable to parse line {}, {}", line_number, string))
+                            })
+                            .collect::<Result<Vec<Record>>>()?;
+
+    println!("records = {:#?}", records);
 
     Err("parse_file for csv is not complete".to_string())
 }
 
 #[derive(Debug)]
-struct Record<'a> {
-    name: &'a str,
-    description: Option<&'a str>,
-    quantity: Option<&'a str>,
-    translations: HashMap<&'a str, &'a str>,
+struct Record {
+    name: String,
+    description: Option<String>,
+    quantity: Option<String>,
+    translations: HashMap<String, String>,
 }
 
 #[derive(Debug)]
-struct RecordBuilder<'a> {
-    name: Option<&'a str>,
-    description: Option<&'a str>,
-    quantity: Option<&'a str>,
-    translations: HashMap<&'a str, &'a str>,
+struct RecordBuilder {
+    name: Option<String>,
+    description: Option<String>,
+    quantity: Option<String>,
+    translations: HashMap<String, String>,
 }
 
-impl<'a> RecordBuilder<'a> {
-    fn new() -> RecordBuilder<'a> {
+impl RecordBuilder {
+    fn new() -> RecordBuilder {
         RecordBuilder {
             name: None,
             description: None,
@@ -60,7 +63,7 @@ impl<'a> RecordBuilder<'a> {
         }
     }
 
-    fn name(&mut self, name: &'a str) -> &mut Self {
+    fn name(&mut self, name: String) -> &mut Self {
         if !name.trim().is_empty() {
             self.name = Some(name);
         }
@@ -68,7 +71,7 @@ impl<'a> RecordBuilder<'a> {
         self
     }
 
-    fn description(&mut self, description: &'a str) -> &mut Self {
+    fn description(&mut self, description: String) -> &mut Self {
         if !description.trim().is_empty() {
             self.description = Some(description);
         }
@@ -76,7 +79,7 @@ impl<'a> RecordBuilder<'a> {
         self
     }
 
-    fn quantity(&mut self, quantity: &'a str) -> &mut Self {
+    fn quantity(&mut self, quantity: String) -> &mut Self {
         if !quantity.trim().is_empty() {
             self.quantity = Some(quantity);
         }
@@ -84,12 +87,12 @@ impl<'a> RecordBuilder<'a> {
         self
     }
 
-    fn translation(&mut self, key: &'a str, value: &'a str) -> &mut Self {
+    fn translation(&mut self, key: String, value: String) -> &mut Self {
         self.translations.insert(key, value);
         self
     }
 
-    fn build(self) -> Result<Record<'a>> {
+    fn build(self) -> Result<Record> {
         Ok(Record {
             name: self.name.ok_or(String::from("missing name"))?,
             description: self.description,
