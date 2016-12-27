@@ -2,5 +2,8 @@
 .idea
 *.iml
 
+# VS Code
+.vscode
+
 # Rust
 target
