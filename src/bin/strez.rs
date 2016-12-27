@@ -28,12 +28,18 @@ fn main() {
 
 fn run(args: clap::ArgMatches) -> strez::Result<()> {
     let settings = Settings::from_clap(&args)?;
-    let file = fs::File::open(&settings.infile).map_err(|e| format!("\"{}\" could not be read, {}", settings.infile.display(), e.description()))?;
+    let file = fs::File::open(&settings.infile).map_err(|e| {
+            format!("\"{}\" could not be read, {}",
+                    settings.infile.display(),
+                    e.description())
+        })?;
 
     //    println!("settings = {:#?}", settings);
 
     // load data using the appropriate loader
     let resources = settings.format.parse_reader(file)?;
+
+    println!("resources = {:#?}", resources);
 
     Ok(())
 }

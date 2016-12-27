@@ -1,8 +1,10 @@
+use std::collections::HashMap;
 use std::fmt;
 use std::io;
 use std::str::FromStr;
 
 use Result;
+use resource::Resource;
 
 mod csv;
 
@@ -13,10 +15,10 @@ pub enum Format {
 }
 
 impl Format {
-    pub fn parse_reader<R: io::Read>(&self, reader: R) -> Result<()> {
+    pub fn parse_reader<R: io::Read>(&self, reader: R) -> Result<HashMap<String, Resource>> {
         match *self {
             Format::CSV => csv::parse_reader(reader),
-            ref f => Err(format!("{} format is not supported right now", f))
+            ref f => Err(format!("{} format is not supported right now", f)),
         }
     }
 }
