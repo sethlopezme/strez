@@ -7,7 +7,7 @@ use resource::{Resource, Translation};
 
 extern crate csv;
 
-pub fn parse_reader<'a, R: io::Read>(reader: R) -> Result<()> {
+pub fn parse_reader<'a, R: io::Read>(reader: R) -> Result<HashMap<String, Resource>> {
     let mut csv_reader = csv::Reader::from_reader(reader);
     let headers = csv_reader.headers()
         .map_err(|e| format!("unable to parse headers, {}", e.description()))?;
@@ -33,7 +33,6 @@ pub fn parse_reader<'a, R: io::Read>(reader: R) -> Result<()> {
                 .map_err(|e| format!("unable to parse line {}, {}", i + 2, e))
         })
         .collect::<Result<Vec<Record>>>()?;
-
     let mut resources: HashMap<String, Resource> = HashMap::new();
 
     for record in records {
@@ -48,12 +47,13 @@ pub fn parse_reader<'a, R: io::Read>(reader: R) -> Result<()> {
 
             if let Some(quantity) = record.quantity.as_ref() {
                 match quantity.to_lowercase().trim() {
-                    "zero" => translation.zero = Some(value),
-                    "one" => translation.one = Some(value),
-                    "two" => translation.two = Some(value),
+                    "zero" | "0" => translation.zero = Some(value),
+                    "one" | "1" => translation.one = Some(value),
+                    "two" | "2" => translation.two = Some(value),
                     "few" => translation.few = Some(value),
                     "many" => translation.many = Some(value),
-                    _ => translation.other = Some(value),
+                    "other" | "?" => translation.other = Some(value),
+                    _ => return Err(format!("invalid quantity \"{}\"", quantity)),
                 }
             } else {
                 translation.other = Some(value);
@@ -61,9 +61,7 @@ pub fn parse_reader<'a, R: io::Read>(reader: R) -> Result<()> {
         }
     }
 
-    println!("resources = {:#?}", resources);
-
-    Err("parse_file for csv is not complete".to_string())
+    Ok(resources)
 }
 
 #[derive(Debug)]
