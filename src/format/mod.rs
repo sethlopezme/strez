@@ -7,6 +7,7 @@ use Result;
 use resource::Resource;
 
 mod csv;
+use self::csv::CSV;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd)]
 pub enum Format {
@@ -17,7 +18,7 @@ pub enum Format {
 impl Format {
     pub fn parse_reader<R: io::Read>(&self, reader: R) -> Result<HashMap<String, Resource>> {
         match *self {
-            Format::CSV => csv::parse_reader(reader),
+            Format::CSV => CSV::parse_reader(reader),
             ref f => Err(format!("{} format is not supported right now", f)),
         }
     }

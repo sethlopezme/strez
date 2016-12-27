@@ -7,61 +7,71 @@ use resource::{Resource, Translation};
 
 extern crate csv;
 
-pub fn parse_reader<'a, R: io::Read>(reader: R) -> Result<HashMap<String, Resource>> {
-    let mut csv_reader = csv::Reader::from_reader(reader);
-    let headers = csv_reader.headers()
-        .map_err(|e| format!("unable to parse headers, {}", e.description()))?;
-    let records = csv_reader.records()
-        .enumerate()
-        .map(|(i, row)| {
-            let row =
+pub struct CSV;
+
+impl CSV {
+    pub fn parse_reader<'a, R: io::Read>(reader: R) -> Result<HashMap<String, Resource>> {
+        let mut csv_reader = csv::Reader::from_reader(reader);
+        let headers = csv_reader.headers()
+            .map_err(|e| format!("unable to parse headers, {}", e.description()))?;
+        let records = csv_reader.records()
+            .enumerate()
+            .map(|(i, row)| {
+                let row =
                 row.map_err(|e| format!("unable to parse line {}, {}", i + 2, e.description()))?;
-            // create an iterator over the headers and column values
-            let key_value_iter = headers.iter().zip(row.into_iter());
-            let mut record_builder = RecordBuilder::new();
+                // create an iterator over the headers and column values
+                let key_value_iter = headers.iter().zip(row.into_iter());
+                let mut record_builder = RecordBuilder::new();
 
-            for (key, value) in key_value_iter {
-                let _ = match key.to_lowercase().trim() {
-                    "name" => record_builder.name(value),
-                    "description" => record_builder.description(value),
-                    "quantity" => record_builder.quantity(value),
-                    _ => record_builder.translation(key.clone(), value),
-                };
-            }
-
-            record_builder.build()
-                .map_err(|e| format!("unable to parse line {}, {}", i + 2, e))
-        })
-        .collect::<Result<Vec<Record>>>()?;
-    let mut resources: HashMap<String, Resource> = HashMap::new();
-
-    for record in records {
-        let resource = resources.entry(record.name).or_insert(Resource {
-            description: record.description,
-            plural: record.quantity.is_some(),
-            translations: HashMap::new(),
-        });
-
-        for (key, value) in record.translations.into_iter() {
-            let translation = resource.translations.entry(key).or_insert(Translation::default());
-
-            if let Some(quantity) = record.quantity.as_ref() {
-                match quantity.to_lowercase().trim() {
-                    "zero" | "0" => translation.zero = Some(value),
-                    "one" | "1" => translation.one = Some(value),
-                    "two" | "2" => translation.two = Some(value),
-                    "few" => translation.few = Some(value),
-                    "many" => translation.many = Some(value),
-                    "other" | "?" => translation.other = Some(value),
-                    _ => return Err(format!("invalid quantity \"{}\"", quantity)),
+                for (key, value) in key_value_iter {
+                    let _ = match key.to_lowercase().trim() {
+                        "name" => record_builder.name(value),
+                        "description" => record_builder.description(value),
+                        "quantity" => record_builder.quantity(value),
+                        _ => record_builder.translation(key.clone(), value),
+                    };
                 }
-            } else {
-                translation.other = Some(value);
+
+                record_builder.build()
+                    .map_err(|e| format!("invalid record on line {}, {}", i + 2, e))
+            })
+            .collect::<Result<Vec<Record>>>()?;
+        let mut resources: HashMap<String, Resource> = HashMap::new();
+
+        for (i, record) in records.into_iter().enumerate() {
+            let resource = resources.entry(record.name).or_insert(Resource {
+                description: record.description,
+                plural: record.quantity.is_some(),
+                translations: HashMap::new(),
+            });
+
+            for (key, value) in record.translations.into_iter() {
+                let translation =
+                    resource.translations.entry(key).or_insert(Translation::default());
+
+                if let Some(quantity) = record.quantity.as_ref() {
+                    match quantity.to_lowercase().trim() {
+                        "zero" | "0" => translation.zero = Some(value),
+                        "one" | "1" => translation.one = Some(value),
+                        "two" | "2" => translation.two = Some(value),
+                        "few" => translation.few = Some(value),
+                        "many" => translation.many = Some(value),
+                        "other" | "?" => translation.other = Some(value),
+                        _ => {
+                            return Err(format!("invalid record on line {}, invalid quantity \
+                                                \"{}\"",
+                                               i + 2,
+                                               quantity))
+                        }
+                    }
+                } else {
+                    translation.other = Some(value);
+                }
             }
         }
-    }
 
-    Ok(resources)
+        Ok(resources)
+    }
 }
 
 #[derive(Debug)]
